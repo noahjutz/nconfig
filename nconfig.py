@@ -57,24 +57,24 @@ def cli():
 def auto_install():
     """Configure everything according to passed options"""
     # Initial prompts
-    restore_dotfiles = click.confirm("Restore dotfiles?", default=True)
-    restore_backup = click.confirm("Restore backup?", default=True)
-    install_packages = click.confirm("Install packages?", default=True)
+    restore_dotfiles = click.confirm("Restore dotfiles?")
+    restore_backup = click.confirm("Restore backup?")
+    install_packages = click.confirm("Install packages?")
 
     # Package specific prompts
     if install_packages:
         package_manager = \
-            click.prompt("Package manager", type=click.Choice(choices=packages.keys(), case_sensitive=False))
+            click.prompt("  Package manager", type=click.Choice(choices=packages.keys(), case_sensitive=False))
         package_manager = pacman if package_manager == "PACMAN" else deb
 
         # Prompt each package group
         groups = {}
         packages_to_install = list()
         for group in package_manager:
-            groups[group] = click.confirm("Install {} packages?".format(click.style(group, fg="blue")), default=True)
+            groups[group] = click.confirm("    Install {} packages?".format(click.style(group, fg="blue")))
             if groups[group]:
                 for package in package_manager[group]:
-                    if click.confirm("  Install {}?".format(click.style(package, fg="green")), default=False):
+                    if click.confirm("      Install {}?".format(click.style(package, fg="green"))):
                         packages_to_install.append(package)
         click.echo("Packages to install: {}".format(str(packages_to_install)))
 
