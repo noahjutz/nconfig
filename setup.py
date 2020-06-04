@@ -8,6 +8,6 @@ setup(
     ],
     entry_points={
         "console_scripts":
-            ["nconfig=nconfig:main"]
+            ["nconfig=nconfig:cli"]
     },
 )
