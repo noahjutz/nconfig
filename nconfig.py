@@ -47,6 +47,10 @@ packages = {
 }
 
 
+def prompt_h1(prompt):
+    return click.style("> ", bold=True) + click.style(prompt, fg="magenta")
+
+
 @click.group()
 def cli():
     """CLI for configuring linux."""
@@ -59,9 +63,9 @@ def auto_install():
 
     """ prompts """
     # Initial prompts
-    restore_dotfiles = click.confirm(click.style("> Restore dotfiles?", fg="magenta"))
-    restore_backup = click.confirm(click.style("> Restore backup?", fg="magenta"))
-    install_packages = click.confirm(click.style("> Install packages?", fg="magenta"))
+    restore_dotfiles = click.confirm(prompt_h1("Restore dotfiles?"))
+    restore_backup = click.confirm(prompt_h1("Restore backups?"))
+    install_packages = click.confirm(prompt_h1("Install packages?"))
 
     # Package specific prompts
     if install_packages:
