@@ -51,6 +51,14 @@ def prompt_h1(prompt):
     return click.style("> ", bold=True) + click.style(prompt, fg="magenta")
 
 
+def prompt_h2(prompt):
+    return click.style("  > ", bold=True) + click.style(prompt, fg="blue")
+
+
+def prompt_h3(prompt):
+    return click.style("    > ", bold=True) + click.style(prompt, fg="green")
+
+
 @click.group()
 def cli():
     """CLI for configuring linux."""
