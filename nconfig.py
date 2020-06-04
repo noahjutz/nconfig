@@ -56,9 +56,20 @@ def cli():
 @cli.command()
 def auto_install():
     """Configure everything according to passed options"""
-    package_manager = click.prompt("TODO", type=click.Choice(choices=packages.keys(), case_sensitive=False))
-    restore_backup = click.confirm("TODO", default=True)
-    restore_dotfiles = click.confirm("TODO", default=True)
+    # Initial prompts
+    restore_dotfiles = click.confirm("Restore dotfiles?", default=True)
+    restore_backup = click.confirm("Restore backup?", default=True)
+    install_packages = click.confirm("Install packages?", default=True)
+
+    # Package specific prompts
+    if install_packages:
+        package_manager = \
+            click.prompt("Package manager", type=click.Choice(choices=packages.keys(), case_sensitive=False))
+        package_manager = pacman if package_manager == "PACMAN" else deb
+
+        # Prompt each package group
+        for group in package_manager:
+            click.echo(group)
 
 
 @cli.command()
