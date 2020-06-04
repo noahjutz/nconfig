@@ -1,4 +1,4 @@
 .idea/
 venv/
 nconfig.egg-info/
-__pycache__/
+__pycache__/.cfg

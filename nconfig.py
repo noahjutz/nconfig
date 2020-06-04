@@ -152,6 +152,15 @@ def auto_install():
 
     """ install """
     cl.echo(info_h1("Starting installation."))
+
+    # Restore dotfiles
+    if restore_dotfiles:
+        cl.echo(info_h2("Restoring dotfiles..."))
+        os.system("git clone --bare https://github.com/noahjutz/dotfiles $HOME/.cfg &> /dev/null\n" +
+                  "git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout -f\n" +
+                  "git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no\n" +
+                  "echo \".cfg\" >> .gitignore &> /dev/null")
+
     # Install packages
     if install_packages:
         if package_manager == pacman:
