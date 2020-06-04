@@ -54,19 +54,19 @@ def prompt_h1(prompt):
 
 
 def prompt_h2(prompt):
-    return cl.style("  ? ", bold=True, fg="blue") + prompt
+    return cl.style("  ? ", bold=True, fg="magenta") + prompt
 
 
 def prompt_h3(prompt):
-    return cl.style("    ? ", bold=True, fg="green") + prompt
+    return cl.style("    ? ", bold=True, fg="magenta") + prompt
 
 
 def prompt_h4(prompt):
-    return cl.style("      ? ", bold=True) + prompt
+    return cl.style("      ? ", bold=True, fg="magenta") + prompt
 
 
 def info_h1(info):
-    return cl.style("> ", bold=True, fg="magenta") + info
+    return cl.style("> ", bold=True, fg="blue") + info
 
 
 def info_h2(info):
@@ -74,7 +74,7 @@ def info_h2(info):
 
 
 def info_h3(info):
-    return cl.style("    > ", bold=True, fg="green") + info
+    return cl.style("    > ", bold=True, fg="blue") + info
 
 
 @cl.group()
