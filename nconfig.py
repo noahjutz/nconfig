@@ -48,19 +48,19 @@ packages = {
 
 
 def prompt_h1(prompt):
-    return click.style("> ", bold=True) + click.style(prompt, fg="magenta")
+    return click.style("? ", bold=True, fg="magenta") + prompt
 
 
 def prompt_h2(prompt):
-    return click.style("  > ", bold=True) + click.style(prompt, fg="blue")
+    return click.style("  ? ", bold=True, fg="blue") + prompt
 
 
 def prompt_h3(prompt):
-    return click.style("    > ", bold=True) + click.style(prompt, fg="green")
+    return click.style("    ? ", bold=True, fg="green") + prompt
 
 
 def prompt_h4(prompt):
-    return click.style("      > ", bold=True) + prompt
+    return click.style("      ? ", bold=True) + prompt
 
 
 @click.group()
