@@ -156,14 +156,18 @@ def auto_install():
     if install_packages:
         if package_manager == pacman:
             # Update
+            cl.echo(info_h2("Updating packages..."))
             os.system("yay -Syu --answerclean None --answerdiff None --ask no")
             # Install packages
-            cl.echo(info_h2("Installing pacman packages..."))
+            cl.echo(info_h2("Installing packages..."))
             for package in packages_to_install:
                 cl.echo(info_h3("Installing {}...".format(package)))
                 os.system("yay -S --answerclean None --answerdiff None --ask no {} &> /dev/null".format(package))
         elif package_manager == deb:
-            cl.echo(info_h2("Installing debian packages..."))
+            # Update
+            cl.echo(info_h2("Updating packages..."))
+            # Install packages
+            cl.echo(info_h2("Installing packages..."))
 
     # Done
     cl.echo(info_h1("Installation complete."))
