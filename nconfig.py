@@ -73,6 +73,10 @@ def info_h2(info):
     return cl.style("  > ", bold=True, fg="blue") + info
 
 
+def info_h3(info):
+    return cl.style("    > ", bold=True, fg="green") + info
+
+
 @cl.group()
 def cli():
     """CLI for configuring linux."""
@@ -108,9 +112,23 @@ def auto_install():
 
         # Confirmation screen
         cl.echo()
-        cl.echo(info_h1("Packages to install:"))
+        cl.echo(info_h1("Confirm your input:"))
+
+        # Task list
+        cl.echo(info_h2("Task list:"))
+        if restore_dotfiles:
+            cl.echo(info_h3("Restore dotfiles"))
+
+        if restore_backup:
+            cl.echo(info_h3("Restore backup"))
+
+        if install_packages:
+            cl.echo(info_h3("Install packages"))
+
+        # Packages to install
+        cl.echo(info_h2("Packages to install:"))
         if not packages_to_install:
-            cl.echo(info_h2("None"))
+            cl.echo(info_h3("None"))
         else:
             for package in packages_to_install:
                 cl.echo(info_h2(package))
