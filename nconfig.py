@@ -9,9 +9,15 @@ pacman = {
         "gcc",
         "pkg-config",
         "fakeroot",
+
+        "python",
+        "python-pip"
+    ),
+    "cli": (
         "fish",
         "htop",
-        "gvim"
+        "gvim",
+        "ranger"
     ),
     "social": (
         "discord",
