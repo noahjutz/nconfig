@@ -105,15 +105,23 @@ def auto_install():
                     for package in package_manager[group]:
                         if cl.confirm(prompt_h4("Install {}?".format(package))):
                             packages_to_install.append(package)
-            cl.echo()
-            cl.echo(info_h1("Packages to install:"))
+
+        # Confirmation screen
+        cl.echo()
+        cl.echo(info_h1("Packages to install:"))
+        if not packages_to_install:
+            cl.echo(info_h2("None"))
+        else:
             for package in packages_to_install:
                 cl.echo(info_h2(package))
-            cl.echo()
+        cl.echo()
+
+        # Confirmation prompt
         if cl.confirm(prompt_h1("Start installation?")):
             break
         else:
             cl.echo(info_h2("Starting over."))
+
         cl.echo()
 
     """ install """
