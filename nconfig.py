@@ -77,6 +77,10 @@ def info_h3(info):
     return cl.style("    > ", bold=True, fg="blue") + info
 
 
+def info_h4(info):
+    return cl.style("      > ", bold=True, fg="blue") + info
+
+
 @cl.group()
 def cli():
     """CLI for configuring linux."""
@@ -138,12 +142,8 @@ def auto_install():
             cl.echo(info_h3("Install packages"))
 
         # Packages to install
-        cl.echo(info_h2("Packages to install:"))
-        if not packages_to_install:
-            cl.echo(info_h3("None"))
-        else:
-            for package in packages_to_install:
-                cl.echo(info_h3(package))
+        for package in packages_to_install:
+            cl.echo(info_h4(package))
         cl.echo()
 
         # Confirmation prompt
