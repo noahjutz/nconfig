@@ -87,6 +87,7 @@ def cli():
 def auto_install():
     """Configure everything according to passed options"""
 
+    global package_manager
     """ prompts """
     packages_to_install = list()
     while True:
@@ -153,13 +154,16 @@ def auto_install():
     cl.echo(info_h1("Starting installation."))
     # Install packages
     if install_packages:
-        # Update
-        os.system("yay -Syu --answerclean None --answerdiff None --ask no")
-        # Install packages
-        cl.echo(info_h2("Installing packages..."))
-        for package in packages_to_install:
-            cl.echo(info_h3("Installing {}...".format(package)))
-            os.system("yay -S --answerclean None --answerdiff None --ask no {} &> /dev/null".format(package))
+        if package_manager == pacman:
+            # Update
+            os.system("yay -Syu --answerclean None --answerdiff None --ask no")
+            # Install packages
+            cl.echo(info_h2("Installing pacman packages..."))
+            for package in packages_to_install:
+                cl.echo(info_h3("Installing {}...".format(package)))
+                os.system("yay -S --answerclean None --answerdiff None --ask no {} &> /dev/null".format(package))
+        elif package_manager == deb:
+            cl.echo(info_h2("Installing debian packages..."))
 
     # Done
     cl.echo(info_h1("Installation complete."))
