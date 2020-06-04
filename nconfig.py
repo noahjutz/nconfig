@@ -153,6 +153,9 @@ def auto_install():
     cl.echo(info_h1("Starting installation."))
     # Install packages
     if install_packages:
+        # Update
+        os.system("yay -Syu --answerclean None --answerdiff None --ask no")
+        # Install packages
         cl.echo(info_h2("Installing packages..."))
         for package in packages_to_install:
             cl.echo(info_h3("Installing {}...".format(package)))
