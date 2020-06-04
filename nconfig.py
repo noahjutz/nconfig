@@ -47,10 +47,29 @@ packages = {
 }
 
 
-@click.command()
-def main():
-    click.echo(click.style('==> ', fg='green', bold=True) + " " + click.style('Hello World!', bold=True))
+@click.group()
+def cli():
+    """CLI for configuring linux."""
+    pass
+
+
+@cli.command()
+def auto_install():
+    """Configure everything according to passed options"""
+    click.echo("Auto-install")
+
+
+@cli.command()
+def backup():
+    """Back up app settings and push to a server"""
+    click.echo("Backup")
+
+
+@cli.command()
+def restore():
+    """Restore app settings"""
+    click.echo("Restore")
 
 
 if __name__ == '__main__':
-    main()
+    cli()
