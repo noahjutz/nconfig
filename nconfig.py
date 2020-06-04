@@ -78,14 +78,14 @@ def auto_install():
     # Package specific prompts
     if install_packages:
         package_manager = \
-            click.prompt("  > Package manager", type=click.Choice(choices=packages.keys(), case_sensitive=False))
+            click.prompt(prompt_h2("Package manager"), type=click.Choice(choices=packages.keys(), case_sensitive=False))
         package_manager = pacman if package_manager == "PACMAN" else deb
 
         # Prompt each package group
         groups = {}
         packages_to_install = list()
         for group in package_manager:
-            groups[group] = click.confirm("    > Install {} packages?".format(click.style(group, fg="blue")))
+            groups[group] = click.confirm(prompt_h3("Install {} packages?".format(group)))
             if groups[group]:
                 for package in package_manager[group]:
                     if click.confirm("      > Install {}?".format(click.style(package, fg="green"))):
