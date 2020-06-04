@@ -1,14 +1,48 @@
 #!/usr/bin/env python
 import click
 
-text = 'DEB if debian-based. PACMAN if arch-based. RPM if red-hat/fedora-based.'
+pacman = {
+    "essential": (
+        "yay",
+        "binutils",
+        "make",
+        "gcc",
+        "pkg-config",
+        "fakeroot",
+        "fish",
+        "htop",
+        "gvim"
+    ),
+    "social": (
+        "discord",
+        "telegram-desktop"
+    ),
+    "ide": (
+        "android-studio",
+        "pycharm-community-edition",
+        "code"
+    ),
+    "tools": (
+        "bitwarden",
+        "torbrowser-launcher",
+        "brave",
+        "etcher",
+        "virtualbox"
+    )
+}
+
+deb = {
+    # TODO
+}
+
+packages = {
+    "pacman": pacman,
+    "deb": deb
+}
 
 
 @click.command()
-@click.option('--pkg-manager', prompt='Package manager [DEB|PACMAN|RPM]',
-              help=text)
-def main(pkg_manager):
-    """Simple program that greets"""
+def main():
     click.echo(click.style('==> ', fg='green', bold=True) + " " + click.style('Hello World!', bold=True))
 
 
