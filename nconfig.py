@@ -110,8 +110,13 @@ def auto_install():
                         if cl.confirm(prompt_h4("Install {}?".format(package))):
                             packages_to_install.append(package)
 
-        # Confirmation screen
         cl.echo()
+        # User decides to do nothing
+        if not restore_dotfiles and not restore_backup and not install_packages:
+            cl.echo(info_h1("Nothing selected. Starting over."))
+            continue
+
+        # Confirmation screen
         cl.echo(info_h1("Confirm your input:"))
 
         # Task list
