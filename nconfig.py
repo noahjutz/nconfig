@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import click
+import click as cl
 
 pacman = {
     "essential": (
@@ -48,30 +48,30 @@ packages = {
 
 
 def prompt_h1(prompt):
-    return click.style("? ", bold=True, fg="magenta") + prompt
+    return cl.style("? ", bold=True, fg="magenta") + prompt
 
 
 def prompt_h2(prompt):
-    return click.style("  ? ", bold=True, fg="blue") + prompt
+    return cl.style("  ? ", bold=True, fg="blue") + prompt
 
 
 def prompt_h3(prompt):
-    return click.style("    ? ", bold=True, fg="green") + prompt
+    return cl.style("    ? ", bold=True, fg="green") + prompt
 
 
 def prompt_h4(prompt):
-    return click.style("      ? ", bold=True) + prompt
+    return cl.style("      ? ", bold=True) + prompt
 
 
 def info_h1(info):
-    return click.style("> ", bold=True, fg="magenta") + info
+    return cl.style("> ", bold=True, fg="magenta") + info
 
 
 def info_h2(info):
-    return click.style("  > ", bold=True, fg="blue") + info
+    return cl.style("  > ", bold=True, fg="blue") + info
 
 
-@click.group()
+@cl.group()
 def cli():
     """CLI for configuring linux."""
     pass
@@ -83,29 +83,29 @@ def auto_install():
 
     """ prompts """
     # Initial prompts
-    restore_dotfiles = click.confirm(prompt_h1("Restore dotfiles?"))
-    restore_backup = click.confirm(prompt_h1("Restore backups?"))
-    install_packages = click.confirm(prompt_h1("Install packages?"))
+    restore_dotfiles = cl.confirm(prompt_h1("Restore dotfiles?"))
+    restore_backup = cl.confirm(prompt_h1("Restore backups?"))
+    install_packages = cl.confirm(prompt_h1("Install packages?"))
 
     # Package specific prompts
     if install_packages:
         package_manager = \
-            click.prompt(prompt_h2("Package manager"), type=click.Choice(choices=packages.keys(), case_sensitive=False))
+            cl.prompt(prompt_h2("Package manager"), type=cl.Choice(choices=packages.keys(), case_sensitive=False))
         package_manager = pacman if package_manager == "PACMAN" else deb
 
         # Prompt each package group
         groups = {}
         packages_to_install = list()
         for group in package_manager:
-            groups[group] = click.confirm(prompt_h3("Install {} packages?".format(group)))
+            groups[group] = cl.confirm(prompt_h3("Install {} packages?".format(group)))
             if groups[group]:
                 for package in package_manager[group]:
-                    if click.confirm(prompt_h4("Install {}?".format(package))):
+                    if cl.confirm(prompt_h4("Install {}?".format(package))):
                         packages_to_install.append(package)
-        click.echo()
-        click.echo(info_h1("Packages to install:"))
+        cl.echo()
+        cl.echo(info_h1("Packages to install:"))
         for package in packages_to_install:
-            click.echo(info_h2(package))
+            cl.echo(info_h2(package))
 
     """ install """
 
@@ -113,13 +113,13 @@ def auto_install():
 @cli.command()
 def backup():
     """Back up app settings and push to a server"""
-    click.echo("Backup")
+    cl.echo("Backup")
 
 
 @cli.command()
 def restore():
     """Restore app settings"""
-    click.echo("Restore")
+    cl.echo("Restore")
 
 
 if __name__ == '__main__':
