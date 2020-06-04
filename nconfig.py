@@ -42,8 +42,8 @@ deb = {
 }
 
 packages = {
-    "pacman": pacman,
-    "deb": deb
+    "PACMAN": pacman,
+    "DEB": deb
 }
 
 
@@ -56,7 +56,9 @@ def cli():
 @cli.command()
 def auto_install():
     """Configure everything according to passed options"""
-    click.echo("Auto-install")
+    package_manager = click.prompt("TODO", type=click.Choice(choices=packages.keys(), case_sensitive=False))
+    restore_backup = click.confirm("TODO", default=True)
+    restore_dotfiles = click.confirm("TODO", default=True)
 
 
 @cli.command()
