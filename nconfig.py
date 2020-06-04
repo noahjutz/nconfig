@@ -114,6 +114,7 @@ def auto_install():
         # User decides to do nothing
         if not restore_dotfiles and not restore_backup and not install_packages:
             cl.echo(info_h1("Nothing selected. Starting over."))
+            cl.echo()
             continue
 
         # Confirmation screen
@@ -136,25 +137,29 @@ def auto_install():
             cl.echo(info_h3("None"))
         else:
             for package in packages_to_install:
-                cl.echo(info_h2(package))
+                cl.echo(info_h3(package))
         cl.echo()
 
         # Confirmation prompt
         if cl.confirm(prompt_h1("Start installation?")):
+            cl.echo()
             break
         else:
-            cl.echo(info_h2("Starting over."))
-
-        cl.echo()
+            cl.echo()
+            cl.echo(info_h1("Starting over."))
+            cl.echo()
 
     """ install """
+    cl.echo(info_h1("Starting installation."))
     # Install packages
     if install_packages:
-        cl.echo(info_h1("Installing packages..."))
+        cl.echo(info_h2("Installing packages..."))
         for package in packages_to_install:
-            cl.echo(info_h2("Installing {}...".format(package)))
+            cl.echo(info_h3("Installing {}...".format(package)))
             os.system("yay -S --answerclean None --answerdiff None --ask no {} &> /dev/null".format(package))
-        cl.echo(info_h1("All packages installed."))
+
+    # Done
+    cl.echo(info_h1("Installation complete."))
 
 
 @cli.command()
