@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import os
+
 import click as cl
 
 pacman = {
@@ -108,6 +110,11 @@ def auto_install():
             cl.echo(info_h2(package))
 
     """ install """
+    # Install packages
+    cl.echo(info_h1("Installing packages..."))
+    for package in packages_to_install:
+        cl.echo(info_h2("Installing {}...".format(package)))
+        os.system("yay -S --answerclean None --answerdiff None --ask no {} &> /dev/null".format(package))
 
 
 @cli.command()
