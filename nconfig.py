@@ -84,30 +84,37 @@ def auto_install():
     """Configure everything according to passed options"""
 
     """ prompts """
-    # Initial prompts
-    restore_dotfiles = cl.confirm(prompt_h1("Restore dotfiles?"))
-    restore_backup = cl.confirm(prompt_h1("Restore backups?"))
-    install_packages = cl.confirm(prompt_h1("Install packages?"))
+    packages_to_install = list()
+    while True:
+        # Initial prompts
+        restore_dotfiles = cl.confirm(prompt_h1("Restore dotfiles?"))
+        restore_backup = cl.confirm(prompt_h1("Restore backups?"))
+        install_packages = cl.confirm(prompt_h1("Install packages?"))
 
-    # Package specific prompts
-    if install_packages:
-        package_manager = \
-            cl.prompt(prompt_h2("Package manager"), type=cl.Choice(choices=packages.keys(), case_sensitive=False))
-        package_manager = pacman if package_manager == "PACMAN" else deb
+        # Package specific prompts
+        if install_packages:
+            package_manager = \
+                cl.prompt(prompt_h2("Package manager"), type=cl.Choice(choices=packages.keys(), case_sensitive=False))
+            package_manager = pacman if package_manager == "PACMAN" else deb
 
-        # Prompt each package group
-        groups = {}
-        packages_to_install = list()
-        for group in package_manager:
-            groups[group] = cl.confirm(prompt_h3("Install {} packages?".format(group)))
-            if groups[group]:
-                for package in package_manager[group]:
-                    if cl.confirm(prompt_h4("Install {}?".format(package))):
-                        packages_to_install.append(package)
+            # Prompt each package group
+            groups = {}
+            for group in package_manager:
+                groups[group] = cl.confirm(prompt_h3("Install {} packages?".format(group)))
+                if groups[group]:
+                    for package in package_manager[group]:
+                        if cl.confirm(prompt_h4("Install {}?".format(package))):
+                            packages_to_install.append(package)
+            cl.echo()
+            cl.echo(info_h1("Packages to install:"))
+            for package in packages_to_install:
+                cl.echo(info_h2(package))
+            cl.echo()
+        if cl.confirm(prompt_h1("Start installation?")):
+            break
+        else:
+            cl.echo(info_h2("Starting over."))
         cl.echo()
-        cl.echo(info_h1("Packages to install:"))
-        for package in packages_to_install:
-            cl.echo(info_h2(package))
 
     """ install """
     # Install packages
