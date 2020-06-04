@@ -49,6 +49,18 @@ packages = {
 }
 
 
+def prompt(text, indent, type):
+    prefix = ""
+    color = ""
+    if type == 0:
+        prefix = "?"
+        color = "magenta"
+    elif type == 1:
+        prefix = ">"
+        color = "blue"
+    return cl.style(indent * "  " + prefix + " ", bold=True, fg=color) + text
+
+
 def prompt_h1(prompt):
     return cl.style("? ", bold=True, fg="magenta") + prompt
 
