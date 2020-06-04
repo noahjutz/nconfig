@@ -169,8 +169,8 @@ def auto_install():
     # Restore backup
     if restore_backup:
         cl.echo(info_h2("Restoring backup..."))
-        os.system("dconf load / < {}/gnome-settings\n".format(backup_path) +
-                  "tar xf {}/brave.tar.gz -C $HOME/.config/".format(backup_path))
+        os.system("dconf load / &> /dev/null < {}/gnome-settings\n".format(backup_path) +
+                  "tar xf {}/brave.tar.gz -C $HOME/.config/ &> /dev/null".format(backup_path))
 
     # Install packages
     if install_packages:
