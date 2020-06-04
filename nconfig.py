@@ -61,38 +61,6 @@ def prompt(text, indent, type):
     return cl.style(indent * "  " + prefix + " ", bold=True, fg=color) + text
 
 
-def prompt_h1(prompt):
-    return cl.style("? ", bold=True, fg="magenta") + prompt
-
-
-def prompt_h2(prompt):
-    return cl.style("  ? ", bold=True, fg="magenta") + prompt
-
-
-def prompt_h3(prompt):
-    return cl.style("    ? ", bold=True, fg="magenta") + prompt
-
-
-def prompt_h4(prompt):
-    return cl.style("      ? ", bold=True, fg="magenta") + prompt
-
-
-def info_h1(info):
-    return cl.style("> ", bold=True, fg="blue") + info
-
-
-def info_h2(info):
-    return cl.style("  > ", bold=True, fg="blue") + info
-
-
-def info_h3(info):
-    return cl.style("    > ", bold=True, fg="blue") + info
-
-
-def info_h4(info):
-    return cl.style("      > ", bold=True, fg="blue") + info
-
-
 @cl.group()
 def cli():
     """CLI for configuring linux."""
@@ -108,71 +76,73 @@ def auto_install():
     packages_to_install = list()
     while True:
         # Initial prompts
-        restore_dotfiles = cl.confirm(prompt_h1("Restore dotfiles?"))
-        restore_backup = cl.confirm(prompt_h1("Restore backups?"))
+        restore_dotfiles = cl.confirm(prompt("Restore dotfiles?", 0, 0))
+        restore_backup = cl.confirm(prompt("Restore backups?", 0, 0))
 
         # Backup prompts
         if restore_backup:
-            backup_path = cl.prompt(prompt_h2("Backup path"), type=cl.Path(dir_okay=True, exists=True, readable=True, ))
+            backup_path = cl.prompt(prompt("Backup path", 1, 0),
+                                    type=cl.Path(dir_okay=True, exists=True, readable=True, ))
 
-        install_packages = cl.confirm(prompt_h1("Install packages?"))
+        install_packages = cl.confirm(prompt("Install packages?", 0, 0))
 
         # Package specific prompts
         if install_packages:
             package_manager = \
-                cl.prompt(prompt_h2("Package manager"), type=cl.Choice(choices=packages.keys(), case_sensitive=False))
+                cl.prompt(prompt("Package manager", 1, 0),
+                          type=cl.Choice(choices=packages.keys(), case_sensitive=False))
             package_manager = pacman if package_manager == "PACMAN" else deb
 
             # Prompt each package group
             groups = {}
             for group in package_manager:
-                groups[group] = cl.confirm(prompt_h3("Install {} packages?".format(group)))
+                groups[group] = cl.confirm(prompt("Install {} packages?".format(group), 2, 0))
                 if groups[group]:
                     for package in package_manager[group]:
-                        if cl.confirm(prompt_h4("Install {}?".format(package))):
+                        if cl.confirm(prompt("Install {}?".format(package), 3, 0)):
                             packages_to_install.append(package)
 
         cl.echo()
         # User decides to do nothing
         if not restore_dotfiles and not restore_backup and not install_packages:
-            cl.echo(info_h1("Nothing selected. Starting over."))
+            cl.echo(prompt("Nothing selected. Starting over.", 0, 1))
             cl.echo()
             continue
 
         # Confirmation screen
-        cl.echo(info_h1("Confirm your input:"))
+        cl.echo(prompt("Confirm your input:", 0, 1))
 
         # Task list
-        cl.echo(info_h2("Task list:"))
+        cl.echo(prompt("Task list:", 1, 1))
         if restore_dotfiles:
-            cl.echo(info_h3("Restore dotfiles"))
+            cl.echo(prompt("Restore dotfiles", 2, 1))
 
         if restore_backup:
-            cl.echo(info_h3("Restore backup"))
+            cl.echo(prompt("Restore backup", 2, 1))
 
         if install_packages:
-            cl.echo(info_h3("Install packages"))
+            cl.echo(prompt("Install packages", 2, 1))
 
         # Packages to install
         for package in packages_to_install:
-            cl.echo(info_h4(package))
+            cl.echo(prompt(package, 3, 1))
         cl.echo()
 
         # Confirmation prompt
-        if cl.confirm(prompt_h1("Start installation?")):
+        if cl.confirm(prompt("Start installation?", 0, 0)):
             cl.echo()
             break
         else:
             cl.echo()
-            cl.echo(info_h1("Starting over."))
+            cl.echo(prompt("Starting over.", 0, 1))
             cl.echo()
 
     """ install """
-    cl.echo(info_h1("Starting installation."))
+    cl.echo(prompt("Starting installation.", 0, 1))
 
     # Restore dotfiles
     if restore_dotfiles:
-        cl.echo(info_h2("Restoring dotfiles..."))
+        cl.echo(prompt("Restoring dotfiles...", 1, 1))
         os.system("git clone --bare https://github.com/noahjutz/dotfiles $HOME/.cfg &> /dev/null\n" +
                   "git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout -f\n" +
                   "git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no\n" +
@@ -180,7 +150,7 @@ def auto_install():
 
     # Restore backup
     if restore_backup:
-        cl.echo(info_h2("Restoring backup..."))
+        cl.echo(prompt("Restoring backup...", 1, 1))
         os.system("dconf load / &> /dev/null < {}/gnome-settings\n".format(backup_path) +
                   "tar xf {}/brave.tar.gz -C $HOME/.config/ &> /dev/null".format(backup_path))
 
@@ -188,21 +158,21 @@ def auto_install():
     if install_packages:
         if package_manager == pacman:
             # Update
-            cl.echo(info_h2("Updating packages..."))
+            cl.echo(prompt("Updating packages...", 1, 1))
             os.system("yay -Syu --answerclean None --answerdiff None --ask no &> /dev/null")
             # Install packages
-            cl.echo(info_h2("Installing packages..."))
+            cl.echo(prompt("Installing packages...", 1, 1))
             for package in packages_to_install:
-                cl.echo(info_h3("Installing {}...".format(package)))
+                cl.echo(prompt("Installing {}...".format(package), 2, 1))
                 os.system("yay -S --answerclean None --answerdiff None --ask no {} &> /dev/null".format(package))
         elif package_manager == deb:
             # Update
-            cl.echo(info_h2("Updating packages..."))
+            cl.echo(prompt("Updating packages...", 1, 1))
             # Install packages
-            cl.echo(info_h2("Installing packages..."))
+            cl.echo(prompt("Installing packages...", 1, 1))
 
     # Done
-    cl.echo(info_h1("Installation complete."))
+    cl.echo(prompt("Installation complete.", 0, 1))
 
 
 @cli.command()
