@@ -68,8 +68,15 @@ def auto_install():
         package_manager = pacman if package_manager == "PACMAN" else deb
 
         # Prompt each package group
+        groups = {}
+        packages_to_install = list()
         for group in package_manager:
-            click.echo(group)
+            groups[group] = click.confirm("Install {} packages?".format(click.style(group, fg="blue")), default=True)
+            if groups[group]:
+                for package in package_manager[group]:
+                    if click.confirm("  Install {}?".format(click.style(package, fg="green")), default=False):
+                        packages_to_install.append(package)
+        click.echo("Packages to install: {}".format(str(packages_to_install)))
 
 
 @cli.command()
