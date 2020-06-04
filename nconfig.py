@@ -59,6 +59,10 @@ def prompt_h3(prompt):
     return click.style("    > ", bold=True) + click.style(prompt, fg="green")
 
 
+def prompt_h4(prompt):
+    return click.style("      > ", bold=True) + prompt
+
+
 @click.group()
 def cli():
     """CLI for configuring linux."""
@@ -88,7 +92,7 @@ def auto_install():
             groups[group] = click.confirm(prompt_h3("Install {} packages?".format(group)))
             if groups[group]:
                 for package in package_manager[group]:
-                    if click.confirm("      > Install {}?".format(click.style(package, fg="green"))):
+                    if click.confirm(prompt_h4("Install {}?".format(package))):
                         packages_to_install.append(package)
         click.echo()
         click.secho("Packages to install:", fg="magenta")
