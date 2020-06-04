@@ -94,6 +94,11 @@ def auto_install():
         # Initial prompts
         restore_dotfiles = cl.confirm(prompt_h1("Restore dotfiles?"))
         restore_backup = cl.confirm(prompt_h1("Restore backups?"))
+
+        # Backup prompts
+        if restore_backup:
+            backup_path = cl.prompt(prompt_h2("Backup path"), type=cl.Path(dir_okay=True, exists=True, readable=True, ))
+
         install_packages = cl.confirm(prompt_h1("Install packages?"))
 
         # Package specific prompts
@@ -164,7 +169,6 @@ def auto_install():
     # Restore backup
     if restore_backup:
         cl.echo(info_h2("Restoring backup..."))
-        backup_path = "TODO"
         os.system("dconf load / < {}/gnome-settings\n".format(backup_path) +
                   "tar xf {}/brave.tar.gz -C $HOME/.config/".format(backup_path))
 
