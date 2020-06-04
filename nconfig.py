@@ -157,7 +157,7 @@ def auto_install():
         if package_manager == pacman:
             # Update
             cl.echo(info_h2("Updating packages..."))
-            os.system("yay -Syu --answerclean None --answerdiff None --ask no")
+            os.system("yay -Syu --answerclean None --answerdiff None --ask no &> /dev/null")
             # Install packages
             cl.echo(info_h2("Installing packages..."))
             for package in packages_to_install:
