@@ -161,6 +161,13 @@ def auto_install():
                   "git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no\n" +
                   "echo \".cfg\" >> .gitignore &> /dev/null")
 
+    # Restore backup
+    if restore_backup:
+        cl.echo(info_h2("Restoring backup..."))
+        backup_path = "TODO"
+        os.system("dconf load / < {}/gnome-settings\n".format(backup_path) +
+                  "tar xf {}/brave.tar.gz -C $HOME/.config/".format(backup_path))
+
     # Install packages
     if install_packages:
         if package_manager == pacman:
