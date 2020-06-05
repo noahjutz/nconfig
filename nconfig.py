@@ -146,6 +146,8 @@ def auto_install():
 
         # Task list
         cl.echo(prompt("Task list:", 1, Prompts.Info))
+        if change_shell:
+            cl.echo(prompt("Change shell", 2, Prompts.Info))
         if restore_dotfiles:
             cl.echo(prompt("Restore dotfiles", 2, Prompts.Info))
             cl.echo(prompt(dotfiles_path, 3, Prompts.Info))
