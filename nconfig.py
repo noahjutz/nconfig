@@ -49,6 +49,9 @@ packages = {
 }
 
 
+logfile_path = "nconfig.log"
+
+
 def prompt(text, indent, type):
     prefix = ""
     color = ""
@@ -143,28 +146,28 @@ def auto_install():
     # Restore dotfiles
     if restore_dotfiles:
         cl.echo(prompt("Restoring dotfiles...", 1, 1))
-        os.system("git clone --bare https://github.com/noahjutz/dotfiles $HOME/.cfg &>> nconfig.log\n" +
+        os.system("git clone --bare https://github.com/noahjutz/dotfiles $HOME/.cfg &>> {logfile_path}\n" +
                   "git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout -f\n" +
                   "git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no\n" +
-                  "echo \".cfg\" >> .gitignore &>> nconfig.log")
+                  "echo \".cfg\" >> .gitignore &>> {logfile_path}")
 
     # Restore backup
     if restore_backup:
         cl.echo(prompt("Restoring backup...", 1, 1))
-        os.system("dconf load / &>> nconfig.log < {}/gnome-settings\n".format(backup_path) +
-                  "tar xf {}/brave.tar.gz -C $HOME/.config/ &>> nconfig.log".format(backup_path))
+        os.system("dconf load / &>> {logfile_path} < {backup_path}/gnome-settings\n" +
+                  "tar xf {backup_path}/brave.tar.gz -C $HOME/.config/ &>> {logfile_path}")
 
     # Install packages
     if install_packages:
         if package_manager == pacman:
             # Update
             cl.echo(prompt("Updating packages...", 1, 1))
-            os.system("yay -Syu --answerclean None --answerdiff None --ask no &>> nconfig.log")
+            os.system("yay -Syu --answerclean None --answerdiff None --ask no &>> {logfile_path}")
             # Install packages
             cl.echo(prompt("Installing packages...", 1, 1))
             for package in packages_to_install:
                 cl.echo(prompt("Installing {}...".format(package), 2, 1))
-                os.system("yay -S --answerclean None --answerdiff None --ask no {} &>> nconfig.log".format(package))
+                os.system("yay -S --answerclean None --answerdiff None --ask no {package} &>> {logfile_path}")
         elif package_manager == deb:
             # Update
             cl.echo(prompt("Updating packages...", 1, 1))
