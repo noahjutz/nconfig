@@ -65,7 +65,8 @@ def prompt(text, indent, prompt_type, bold_text=""):
     elif prompt_type == Prompts.Info:
         prefix = ">"
         color = "blue"
-    return cl.style(indent * "  " + prefix + " ", bold=True, fg=color) + text.format(cl.style(bold_text, bold=True))
+    return cl.style(indent * "  " + prefix + " ", bold=True, fg=color) + text.format(
+        cl.style(bold_text, bold=True, fg=color))
 
 
 @cl.group()
@@ -108,7 +109,7 @@ def auto_install():
                 groups[group] = cl.confirm(prompt("Install {} packages?", 2, Prompts.Question, bold_text=group))
                 if groups[group]:
                     for package in package_manager[group]:
-                        if cl.confirm(prompt("Install {}?",  3, Prompts.Question, bold_text=package)):
+                        if cl.confirm(prompt("Install {}?", 3, Prompts.Question, bold_text=package)):
                             packages_to_install.append(package)
 
         cl.echo()
