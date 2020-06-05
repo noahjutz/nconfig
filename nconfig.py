@@ -49,6 +49,8 @@ packages = {
 }
 
 logfile_path = "nconfig.log"
+env_user = os.environ["USER"]
+env_home = os.environ["HOME"]
 
 
 class Prompts(enum.Enum):
