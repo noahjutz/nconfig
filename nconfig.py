@@ -48,6 +48,7 @@ packages = {
     "DEB": deb
 }
 
+exit_codes = list()
 logfile_path = "nconfig.log"
 env_user = os.environ["USER"]
 env_home = os.environ["HOME"]
@@ -73,6 +74,11 @@ def prompt(text, indent, prompt_type, bold_text=""):
         color = "red"
     return cl.style(indent * "  " + prefix + " ", bold=True, fg=color) + text.format(
         cl.style(bold_text, bold=True, fg=color))
+
+
+def prompt_error(code, indent):
+    templ = "Error code {}. See {} for details.".format("{}", logfile_path)
+    return prompt(templ, indent, Prompts.Alert, str(code))
 
 
 @cl.group()
@@ -166,11 +172,15 @@ def auto_install():
 
     # Restore dotfiles
     if restore_dotfiles:
+        exit_codes.clear()
         cl.echo(prompt("Restoring dotfiles...", 1, Prompts.Info))
-        os.system("git clone --bare {} $HOME/.cfg &>> {}\n".format(dotfiles_path, logfile_path) +
-                  "git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout -f\n" +
-                  "git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no\n" +
-                  "echo \".cfg\" >> .gitignore &>> {}".format(logfile_path))
+        exit_codes.append(os.system("git clone --bare {} $HOME/.cfg &>> {}".format(dotfiles_path, logfile_path)))
+        exit_codes.append(
+            os.system("git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout -f".format(dotfiles_path, logfile_path)))
+        exit_codes.append(os.system("echo \".cfg\" >> .gitignore &>> {}".format(dotfiles_path, logfile_path)))
+        for code in exit_codes:
+            if code != 0:
+                cl.echo(prompt_error(code, 2))
 
     # Restore backup
     if restore_backup:
