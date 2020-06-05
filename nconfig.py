@@ -176,7 +176,7 @@ def auto_install():
         cl.echo(prompt("Restoring dotfiles...", 1, Prompts.Info))
         exit_codes.append(os.system("git clone --bare {} $HOME/.cfg &>> {}".format(dotfiles_path, logfile_path)))
         exit_codes.append(
-            os.system("git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout -f".format(dotfiles_path, logfile_path)))
+            os.system("git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout -f &>> {}".format(logfile_path)))
         exit_codes.append(os.system("echo \".cfg\" >> .gitignore &>> {}".format(dotfiles_path, logfile_path)))
         for code in exit_codes:
             if code != 0:
@@ -186,7 +186,7 @@ def auto_install():
     if restore_backup:
         exit_codes.clear()
         cl.echo(prompt("Restoring backup...", 1, Prompts.Info))
-        exit_codes.append(os.system("dconf load / &>> {} < {}/gnome-settings\n".format(logfile_path, backup_path)))
+        exit_codes.append(os.system("dconf load / &>> {} < {}/gnome-settings".format(logfile_path, backup_path)))
         exit_codes.append(os.system("tar xf {}/brave.tar.gz -C $HOME/.config/ &>> {}".format(backup_path, logfile_path)))
         for code in exit_codes:
             if code != 0:
