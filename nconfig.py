@@ -175,7 +175,7 @@ def auto_install():
             # Install packages
             cl.echo(prompt("Installing packages...", 1, Prompts.Info))
             for package in packages_to_install:
-                cl.echo(prompt("Installing {}...".format(package), 2, Prompts.Info))
+                cl.echo(prompt("Installing {}...", 2, Prompts.Info, bold_text=package))
                 os.system(
                     "yay -S --answerclean None --answerdiff None --ask no {} &>> {}".format(package, logfile_path))
         elif package_manager == deb:
