@@ -55,7 +55,8 @@ env_home = os.environ["HOME"]
 
 class Prompts(enum.Enum):
     Question = 0,
-    Info = 1
+    Info = 1,
+    Alert = 2
 
 
 def prompt(text, indent, prompt_type, bold_text=""):
@@ -67,6 +68,9 @@ def prompt(text, indent, prompt_type, bold_text=""):
     elif prompt_type == Prompts.Info:
         prefix = ">"
         color = "blue"
+    elif prompt_type == Prompts.Alert:
+        prefix = "!"
+        color = "red"
     return cl.style(indent * "  " + prefix + " ", bold=True, fg=color) + text.format(
         cl.style(bold_text, bold=True, fg=color))
 
