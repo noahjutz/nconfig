@@ -67,7 +67,9 @@ def prompt(text, indent, type):
 @cl.group()
 def cli():
     """CLI for configuring linux."""
-    pass
+    # Clear logfile
+    f = open(logfile_path, "w")
+    f.write("")
 
 
 @cli.command()
