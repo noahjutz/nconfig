@@ -227,6 +227,15 @@ def auto_install():
             if code != 0:
                 cl.echo(prompt_error(code, 2))
 
+    # Change shell
+    if change_shell:
+        exit_codes.clear()
+        cl.echo(prompt("Changing shell...", 1, Prompts.Info))
+        exit_codes.append(os.system("sudo chsh -s /usr/bin/fish {} &>> {}".format(env_user, logfile_path)))
+        for code in exit_codes:
+            if code != 0:
+                cl.echo(prompt_error(code, 2))
+
     # Done
     cl.echo(prompt("Installation complete.", 0, Prompts.Info))
     cl.echo(prompt("Please log out for changes to take effect", 0, Prompts.Info))
