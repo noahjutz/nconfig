@@ -179,7 +179,7 @@ def auto_install():
         exit_codes.append(os.system("git clone --bare {} $HOME/.cfg &>> {}".format(dotfiles_path, logfile_path)))
         exit_codes.append(
             os.system("git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout -f &>> {}".format(logfile_path)))
-        exit_codes.append(os.system("echo \".cfg\" >> .gitignore &>> {}".format(dotfiles_path, logfile_path)))
+        exit_codes.append(os.system("echo \".cfg\" >> .gitignore &>> {}".format(logfile_path)))
         for code in exit_codes:
             if code != 0:
                 cl.echo(prompt_error(code, 2))
