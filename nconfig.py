@@ -187,28 +187,34 @@ def auto_install():
         exit_codes.clear()
         cl.echo(prompt("Restoring backup...", 1, Prompts.Info))
         exit_codes.append(os.system("dconf load / &>> {} < {}/gnome-settings".format(logfile_path, backup_path)))
-        exit_codes.append(os.system("tar xf {}/brave.tar.gz -C $HOME/.config/ &>> {}".format(backup_path, logfile_path)))
+        exit_codes.append(
+            os.system("tar xf {}/brave.tar.gz -C $HOME/.config/ &>> {}".format(backup_path, logfile_path)))
         for code in exit_codes:
             if code != 0:
                 cl.echo(prompt_error(code, 2))
 
     # Install packages
     if install_packages:
+        exit_codes.clear()
         if package_manager == pacman:
             # Update
             cl.echo(prompt("Updating packages...", 1, Prompts.Info))
-            os.system("yay -Syu --answerclean None --answerdiff None --ask no &>> {}".format(logfile_path))
+            exit_codes.append(
+                os.system("yay -Syu --answerclean None --answerdiff None --ask no &>> {}".format(logfile_path)))
             # Install packages
             cl.echo(prompt("Installing packages...", 1, Prompts.Info))
             for package in packages_to_install:
                 cl.echo(prompt("Installing {}...", 2, Prompts.Info, bold_text=package))
-                os.system(
-                    "yay -S --answerclean None --answerdiff None --ask no {} &>> {}".format(package, logfile_path))
+                exit_codes.append(os.system(
+                    "yay -S --answerclean None --answerdiff None --ask no {} &>> {}".format(package, logfile_path)))
         elif package_manager == deb:
             # Update
             cl.echo(prompt("Updating packages...", 1, Prompts.Info))
             # Install packages
             cl.echo(prompt("Installing packages...", 1, Prompts.Info))
+        for code in exit_codes:
+            if code != 0:
+                cl.echo(prompt_error(code, 2))
 
     # Done
     cl.echo(prompt("Installation complete.", 0, Prompts.Info))
