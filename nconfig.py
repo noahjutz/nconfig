@@ -100,7 +100,8 @@ def auto_install():
         # Backup prompts
         if restore_backup:
             backup_path = cl.prompt(prompt("Backup path", 1, Prompts.Question),
-                                    type=cl.Path(dir_okay=True, exists=True, readable=True, ))
+                                    type=cl.Path(dir_okay=True, exists=True, readable=True),
+                                    default="{}/backup".format(env_home))
 
         install_packages = cl.confirm(prompt("Install packages?", 0, Prompts.Question))
 
