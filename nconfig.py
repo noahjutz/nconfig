@@ -173,7 +173,7 @@ def auto_install():
             cl.echo(prompt("Updating packages...", 1, Prompts.Info))
             os.system("yay -Syu --answerclean None --answerdiff None --ask no &>> {}".format(logfile_path))
             # Install packages
-            cl.echo(prompt("Installing packages...", 1, 1))
+            cl.echo(prompt("Installing packages...", 1, Prompts.Info))
             for package in packages_to_install:
                 cl.echo(prompt("Installing {}...".format(package), 2, Prompts.Info))
                 os.system(
