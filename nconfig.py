@@ -87,6 +87,7 @@ def cli():
     # Clear logfile
     f = open(logfile_path, "w")
     f.write("")
+    f.close()
 
 
 @cli.command()

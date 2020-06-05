@@ -1,5 +1,6 @@
 .idea/
 venv/
 nconfig.egg-info/
-__pycache__/.cfg
+__pycache__/
+nconfig.log
 .cfg
