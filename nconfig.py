@@ -89,6 +89,12 @@ def auto_install():
         packages_to_install = list()
         # Initial prompts
         restore_dotfiles = cl.confirm(prompt("Restore dotfiles?", 0, Prompts.Question))
+
+        # Dotfiles prompts
+        if restore_dotfiles:
+            dotfiles_path = cl.prompt(prompt("Dotfiles repo", 1, Prompts.Question), type=str,
+                                      default="https://github.com/noahjutz/dotfiles")
+
         restore_backup = cl.confirm(prompt("Restore backups?", 0, Prompts.Question))
 
         # Backup prompts
@@ -155,7 +161,7 @@ def auto_install():
     # Restore dotfiles
     if restore_dotfiles:
         cl.echo(prompt("Restoring dotfiles...", 1, Prompts.Info))
-        os.system("git clone --bare https://github.com/noahjutz/dotfiles $HOME/.cfg &>> {}\n".format(logfile_path) +
+        os.system("git clone --bare {} $HOME/.cfg &>> {}\n".format(dotfiles_path, logfile_path) +
                   "git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout -f\n" +
                   "git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no\n" +
                   "echo \".cfg\" >> .gitignore &>> {}".format(logfile_path))
