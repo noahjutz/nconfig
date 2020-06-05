@@ -78,8 +78,8 @@ def auto_install():
 
     global package_manager
     """ prompts """
-    packages_to_install = list()
     while True:
+        packages_to_install = list()
         # Initial prompts
         restore_dotfiles = cl.confirm(prompt("Restore dotfiles?", 0, 0))
         restore_backup = cl.confirm(prompt("Restore backups?", 0, 0))
