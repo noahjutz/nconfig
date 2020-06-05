@@ -56,7 +56,7 @@ class Prompts(enum.Enum):
     Info = 1
 
 
-def prompt(text, indent, prompt_type):
+def prompt(text, indent, prompt_type, bold_text=""):
     prefix = ""
     color = ""
     if prompt_type == Prompts.Question:
@@ -65,7 +65,7 @@ def prompt(text, indent, prompt_type):
     elif prompt_type == Prompts.Info:
         prefix = ">"
         color = "blue"
-    return cl.style(indent * "  " + prefix + " ", bold=True, fg=color) + text
+    return cl.style(indent * "  " + prefix + " ", bold=True, fg=color) + text.format(cl.style(bold_text, bold=True))
 
 
 @cl.group()
