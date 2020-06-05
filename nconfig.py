@@ -98,24 +98,21 @@ def auto_install():
     while True:
         packages_to_install = list()
         # Initial prompts
-        restore_dotfiles = cl.confirm(prompt("Restore dotfiles?", 0, Prompts.Question))
-
         # Dotfiles prompts
+        restore_dotfiles = cl.confirm(prompt("Restore dotfiles?", 0, Prompts.Question))
         if restore_dotfiles:
             dotfiles_path = cl.prompt(prompt("Dotfiles repo", 1, Prompts.Question), type=str,
                                       default="https://github.com/noahjutz/dotfiles")
 
-        restore_backup = cl.confirm(prompt("Restore backups?", 0, Prompts.Question))
-
         # Backup prompts
+        restore_backup = cl.confirm(prompt("Restore backups?", 0, Prompts.Question))
         if restore_backup:
             backup_path = cl.prompt(prompt("Backup path", 1, Prompts.Question),
                                     type=cl.Path(dir_okay=True, exists=True, readable=True),
                                     default="{}/backup".format(env_home))
 
+        # Package prompts
         install_packages = cl.confirm(prompt("Install packages?", 0, Prompts.Question))
-
-        # Package specific prompts
         if install_packages:
             package_manager = \
                 cl.prompt(prompt("Package manager", 1, Prompts.Question),
@@ -134,6 +131,7 @@ def auto_install():
                             packages_to_install.append(package)
 
         cl.echo()
+
         # User decides to do nothing
         if not restore_dotfiles and not restore_backup and not install_packages:
             cl.echo(prompt("Nothing selected. Starting over.", 0, Prompts.Info))
