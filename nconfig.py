@@ -228,6 +228,7 @@ def auto_install():
 
     # Done
     cl.echo(prompt("Installation complete.", 0, Prompts.Info))
+    cl.echo(prompt("Please log out for changes to take effect", 0, Prompts.Info))
 
 
 @cli.command()
