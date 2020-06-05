@@ -143,10 +143,9 @@ def auto_install():
 
         if install_packages:
             cl.echo(prompt("Install packages", 2, Prompts.Info))
+            for package in packages_to_install:
+                cl.echo(prompt(package, 3, Prompts.Info))
 
-        # Packages to install
-        for package in packages_to_install:
-            cl.echo(prompt(package, 3, Prompts.Info))
         cl.echo()
 
         # Confirmation prompt
