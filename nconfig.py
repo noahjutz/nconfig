@@ -98,6 +98,9 @@ def auto_install():
     while True:
         packages_to_install = list()
         # Initial prompts
+        # Change shell
+        change_shell = cl.confirm(prompt("Change shell?", 0, Prompts.Question))
+
         # Dotfiles prompts
         restore_dotfiles = cl.confirm(prompt("Restore dotfiles?", 0, Prompts.Question))
         if restore_dotfiles:
@@ -133,7 +136,7 @@ def auto_install():
         cl.echo()
 
         # User decides to do nothing
-        if not restore_dotfiles and not restore_backup and not install_packages:
+        if not restore_dotfiles and not restore_backup and not install_packages and not change_shell:
             cl.echo(prompt("Nothing selected. Starting over.", 0, Prompts.Info))
             cl.echo()
             continue
