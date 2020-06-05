@@ -135,9 +135,11 @@ def auto_install():
         cl.echo(prompt("Task list:", 1, Prompts.Info))
         if restore_dotfiles:
             cl.echo(prompt("Restore dotfiles", 2, Prompts.Info))
+            cl.echo(prompt(dotfiles_path, 3, Prompts.Info))
 
         if restore_backup:
             cl.echo(prompt("Restore backup", 2, Prompts.Info))
+            cl.echo(prompt(backup_path, 3, Prompts.Info))
 
         if install_packages:
             cl.echo(prompt("Install packages", 2, Prompts.Info))
