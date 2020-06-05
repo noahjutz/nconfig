@@ -105,10 +105,10 @@ def auto_install():
             # Prompt each package group
             groups = {}
             for group in package_manager:
-                groups[group] = cl.confirm(prompt("Install {} packages?".format(group), 2, Prompts.Question))
+                groups[group] = cl.confirm(prompt("Install {} packages?", 2, Prompts.Question, bold_text=group))
                 if groups[group]:
                     for package in package_manager[group]:
-                        if cl.confirm(prompt("Install {}?".format(package), 3, Prompts.Question)):
+                        if cl.confirm(prompt("Install {}?",  3, Prompts.Question, bold_text=package)):
                             packages_to_install.append(package)
 
         cl.echo()
