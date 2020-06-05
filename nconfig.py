@@ -200,7 +200,15 @@ def auto_install():
             # Update
             cl.echo(prompt("Updating packages...", 1, Prompts.Info))
             exit_codes.append(
-                os.system("yay -Syu --answerclean None --answerdiff None --ask no &>> {}".format(logfile_path)))
+                os.system("sudo pacman -Syu --noconfirm &>> {}".format(logfile_path)))
+
+            # Install essential packages
+            cl.echo(prompt("Installing essential packages...", 1, Prompts.Info))
+            for package in pacman["essential"]:
+                cl.echo(prompt("Installing {}...", 2, Prompts.Info, bold_text=package))
+                exit_codes.append(os.system(
+                    "sudo pacman -S --noconfirm {} &>> {}".format(package, logfile_path)))
+
             # Install packages
             cl.echo(prompt("Installing packages...", 1, Prompts.Info))
             for package in packages_to_install:
