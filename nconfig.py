@@ -225,8 +225,11 @@ def auto_install():
         elif package_manager == deb:
             # Update
             cl.echo(prompt("Updating packages...", 1, Prompts.Info))
+            exit_codes.append(os.system("sudo apt-get update &>> {}".format(logfile_path)))
+            exit_codes.append(os.system("sudo apt-get upgrade &>> {}".format(logfile_path)))
             # Install packages
             cl.echo(prompt("Installing packages...", 1, Prompts.Info))
+
         for code in exit_codes:
             if code != 0:
                 cl.echo(prompt_error(code, 2))
