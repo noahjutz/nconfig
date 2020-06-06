@@ -270,9 +270,11 @@ def backup():
 
 
 @cli.command()
-def restore():
+@cl.option('--directory', default="{}/backup".format(env_home), help='Directory containing backup files',
+           type=cl.Path(exists=True, dir_okay=True, readable=True))
+def restore(directory):
     """Restore app settings"""
-    restore_backup_fun()
+    restore_backup_fun(directory)
 
 
 if __name__ == '__main__':
