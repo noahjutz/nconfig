@@ -86,6 +86,14 @@ def prompt_error(code, indent):
     return prompt(templ, indent, Prompts.Alert, str(code))
 
 
+def make_backup():
+    pass
+
+
+def restore_backup():
+    pass
+
+
 @cl.group()
 def cli():
     """CLI for configuring linux."""
@@ -258,13 +266,13 @@ def auto_install():
 @cli.command()
 def backup():
     """Back up app settings and push to a server"""
-    cl.echo("Backup")
+    make_backup()
 
 
 @cli.command()
 def restore():
     """Restore app settings"""
-    cl.echo("Restore")
+    restore_backup()
 
 
 if __name__ == '__main__':
