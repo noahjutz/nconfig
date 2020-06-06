@@ -41,7 +41,11 @@ pacman = {
 }
 
 deb = {
-    # TODO
+    "cli": (
+        "fish",
+        "htop",
+        "vim"
+    )
 }
 
 packages = {
