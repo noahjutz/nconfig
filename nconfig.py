@@ -90,8 +90,15 @@ def make_backup():
     pass
 
 
-def restore_backup():
-    pass
+def restore_backup_fun(backup_path):
+    exit_codes.clear()
+    cl.echo(prompt("Restoring backup...", 1, Prompts.Info))
+    exit_codes.append(os.system("dconf load / &>> {} < {}/gnome-settings".format(logfile_path, backup_path)))
+    exit_codes.append(
+        os.system("tar xf {}/brave.tar.gz -C $HOME/.config/ &>> {}".format(backup_path, logfile_path)))
+    for code in exit_codes:
+        if code != 0:
+            cl.echo(prompt_error(code, 2))
 
 
 @cl.group()
@@ -203,14 +210,7 @@ def auto_install():
 
     # Restore backup
     if restore_backup:
-        exit_codes.clear()
-        cl.echo(prompt("Restoring backup...", 1, Prompts.Info))
-        exit_codes.append(os.system("dconf load / &>> {} < {}/gnome-settings".format(logfile_path, backup_path)))
-        exit_codes.append(
-            os.system("tar xf {}/brave.tar.gz -C $HOME/.config/ &>> {}".format(backup_path, logfile_path)))
-        for code in exit_codes:
-            if code != 0:
-                cl.echo(prompt_error(code, 2))
+        restore_backup_fun(backup_path)
 
     # Install packages
     if install_packages:
@@ -272,7 +272,7 @@ def backup():
 @cli.command()
 def restore():
     """Restore app settings"""
-    restore_backup()
+    restore_backup_fun()
 
 
 if __name__ == '__main__':
