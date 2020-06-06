@@ -229,6 +229,9 @@ def auto_install():
             exit_codes.append(os.system("sudo apt-get upgrade &>> {}".format(logfile_path)))
             # Install packages
             cl.echo(prompt("Installing packages...", 1, Prompts.Info))
+            for package in packages_to_install:
+                cl.echo(prompt("Installing {}...", 2, Prompts.Info, bold_text=package))
+                exit_codes.append(os.system("sudo apt install -y {} &>> {}".format(package, logfile_path)))
 
         for code in exit_codes:
             if code != 0:
