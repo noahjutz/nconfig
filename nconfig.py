@@ -28,6 +28,7 @@ pacman = {
     "ide": (
         "android-studio",
         "pycharm-community-edition",
+        "intellij-idea-community-edition",
         "code"
     ),
     "tools": (
