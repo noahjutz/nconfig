@@ -86,8 +86,14 @@ def prompt_error(code, indent):
     return prompt(templ, indent, Prompts.Alert, str(code))
 
 
-def make_backup():
-    pass
+def make_backup(directory):
+    exit_codes.clear()
+    cl.echo(prompt("Backing up...", 1, Prompts.Info))
+    exit_codes.append(os.system("dconf dump / > {}/gnome-settings &>> {}".format(directory, logfile_path)))
+    exit_codes.append(os.system("tar czf {}/brave.tar.gz ~/.config/BraveSoftware &>> {}".format(directory, logfile_path)))
+    for code in exit_codes:
+        if code != 0:
+            cl.echo(prompt_error(code, 2))
 
 
 def restore_backup_fun(backup_path):
@@ -264,9 +270,11 @@ def auto_install():
 
 
 @cli.command()
-def backup():
-    """Back up app settings and push to a server"""
-    make_backup()
+@cl.option('--directory', default="{}/backup".format(env_home), help='Directory containing backup files',
+           type=cl.Path(exists=True, dir_okay=True, readable=True))
+def backup(directory):
+    """Back up app settings into a directory"""
+    make_backup(directory)
 
 
 @cli.command()
