@@ -107,14 +107,9 @@ def make_backup(directory):
 
 
 def restore_backup_fun(backup_path):
-    exit_codes.clear()
     cl.echo(prompt("Restoring backup...", 1, Prompts.Info))
-    exit_codes.append(os.system("dconf load / &>> {} < {}/gnome-settings".format(logfile_path, backup_path)))
-    exit_codes.append(
-        os.system("tar xf {}/brave.tar.gz -C $HOME/.config/ &>> {}".format(backup_path, logfile_path)))
-    for code in exit_codes:
-        if code != 0:
-            cl.echo(prompt_error(code, 2))
+    execute("dconf load / &>> {} < {}/gnome-settings".format(logfile_path, backup_path))
+    execute("tar xf {}/brave.tar.gz -C $HOME/.config/ &>> {}".format(backup_path, logfile_path))
 
 
 @cl.group()
