@@ -86,20 +86,24 @@ def prompt_error(code, indent):
     return prompt(templ, indent, Prompts.Alert, str(code))
 
 
-def execute(code, indent):
+def execute(code):
+    # Write to log file
+    os.system("echo {} >> {}".format(
+        "'>>> Executing: {}'".format(code),
+        logfile_path
+    ))
+    # Execute code
     exit_code = os.system(code)
+
+    # Show error message
     if exit_code != 0:
-        prompt_error(exit_code, indent)
+        prompt_error(exit_code, 2)
 
 
 def make_backup(directory):
-    exit_codes.clear()
     cl.echo(prompt("Backing up...", 1, Prompts.Info))
-    exit_codes.append(os.system("dconf dump / > {}/gnome-settings &>> {}".format(directory, logfile_path)))
-    exit_codes.append(os.system("tar czf {}/brave.tar.gz ~/.config/BraveSoftware &>> {}".format(directory, logfile_path)))
-    for code in exit_codes:
-        if code != 0:
-            cl.echo(prompt_error(code, 2))
+    execute("dconf dump / > {}/gnome-settings &>> {}".format(directory, logfile_path))
+    execute("tar czf {}/brave.tar.gz ~/.config/BraveSoftware &>> {}".format(directory, logfile_path))
 
 
 def restore_backup_fun(backup_path):
