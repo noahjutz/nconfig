@@ -98,7 +98,12 @@ def execute(*code):
 
         # Show error message
         if exit_code != 0:
-            prompt_error(exit_code, 2)
+            cl.echo(prompt_error(exit_code, 2))
+            # Write to log
+            os.system("echo -e {} >> {}".format(
+                "'\n^^^ Error: Exit code {} '".format(str(exit_code)),
+                logfile_path
+            ))
 
 
 def make_backup(directory):
