@@ -86,18 +86,19 @@ def prompt_error(code, indent):
     return prompt(templ, indent, Prompts.Alert, str(code))
 
 
-def execute(code):
-    # Write to log file
-    os.system("echo {} >> {}".format(
-        "'>>> Executing: {}'".format(code),
-        logfile_path
-    ))
-    # Execute code
-    exit_code = os.system(code)
+def execute(*code):
+    for c in code:
+        # Write to log file
+        os.system("echo {} >> {}".format(
+            "'>>> Executing: {}'".format(c),
+            logfile_path
+        ))
+        # Execute code
+        exit_code = os.system(c)
 
-    # Show error message
-    if exit_code != 0:
-        prompt_error(exit_code, 2)
+        # Show error message
+        if exit_code != 0:
+            prompt_error(exit_code, 2)
 
 
 def make_backup(directory):
