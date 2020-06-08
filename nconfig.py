@@ -86,6 +86,12 @@ def prompt_error(code, indent):
     return prompt(templ, indent, Prompts.Alert, str(code))
 
 
+def execute(code, indent):
+    exit_code = os.system(code)
+    if exit_code != 0:
+        prompt_error(exit_code, indent)
+
+
 def make_backup(directory):
     exit_codes.clear()
     cl.echo(prompt("Backing up...", 1, Prompts.Info))
