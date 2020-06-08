@@ -103,8 +103,10 @@ def execute(*code):
 
 def make_backup(directory):
     cl.echo(prompt("Backing up...", 1, Prompts.Info))
-    execute("dconf dump / > {}/gnome-settings &>> {}".format(directory, logfile_path))
-    execute("tar czf {}/brave.tar.gz ~/.config/BraveSoftware &>> {}".format(directory, logfile_path))
+    execute(
+        "dconf dump / > {}/gnome-settings &>> {}".format(directory, logfile_path),
+        "tar czf {}/brave.tar.gz ~/.config/BraveSoftware &>> {}".format(directory, logfile_path)
+    )
 
 
 def restore_backup_fun(backup_path):
