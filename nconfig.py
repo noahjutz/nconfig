@@ -227,49 +227,41 @@ def auto_install():
 
     # Install packages
     if install_packages:
-        exit_codes.clear()
         if package_manager == pacman:
             # Update
             cl.echo(prompt("Updating packages...", 1, Prompts.Info))
-            exit_codes.append(
-                os.system("sudo pacman -Syu --noconfirm &>> {}".format(logfile_path)))
+            execute("sudo pacman -Syu --noconfirm &>> {}".format(logfile_path))
 
             # Install essential packages
             cl.echo(prompt("Installing essential packages...", 1, Prompts.Info))
             for package in pacman["essential"]:
                 cl.echo(prompt("Installing {}...", 2, Prompts.Info, bold_text=package))
-                exit_codes.append(os.system(
-                    "sudo pacman -S --noconfirm {} &>> {}".format(package, logfile_path)))
+                execute("sudo pacman -S --noconfirm {} &>> {}".format(package, logfile_path))
 
             # Install packages
             cl.echo(prompt("Installing packages...", 1, Prompts.Info))
             for package in packages_to_install:
                 cl.echo(prompt("Installing {}...", 2, Prompts.Info, bold_text=package))
-                exit_codes.append(os.system(
-                    "yay -S --answerclean None --answerdiff None --ask no {} ".format(package)))
+                execute("yay -S --answerclean None --answerdiff None --ask no {} ".format(package))
+
         elif package_manager == deb:
             # Update
             cl.echo(prompt("Updating packages...", 1, Prompts.Info))
-            exit_codes.append(os.system("sudo apt-get update &>> {}".format(logfile_path)))
-            exit_codes.append(os.system("sudo apt-get upgrade &>> {}".format(logfile_path)))
+            execute(
+                "sudo apt-get update &>> {}".format(logfile_path),
+                "sudo apt-get upgrade &>> {}".format(logfile_path)
+            )
+
             # Install packages
             cl.echo(prompt("Installing packages...", 1, Prompts.Info))
             for package in packages_to_install:
                 cl.echo(prompt("Installing {}...", 2, Prompts.Info, bold_text=package))
-                exit_codes.append(os.system("sudo apt install -y {} &>> {}".format(package, logfile_path)))
-
-        for code in exit_codes:
-            if code != 0:
-                cl.echo(prompt_error(code, 2))
+                execute("sudo apt install -y {} &>> {}".format(package, logfile_path))
 
     # Change shell
     if change_shell:
-        exit_codes.clear()
         cl.echo(prompt("Changing shell...", 1, Prompts.Info))
-        exit_codes.append(os.system("sudo chsh -s /usr/bin/fish {} &>> {}".format(env_user, logfile_path)))
-        for code in exit_codes:
-            if code != 0:
-                cl.echo(prompt_error(code, 2))
+        execute("sudo chsh -s /usr/bin/fish {} &>> {}".format(env_user, logfile_path))
 
     # Done
     cl.echo(prompt("Installation complete.", 0, Prompts.Info))
