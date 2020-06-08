@@ -89,8 +89,8 @@ def prompt_error(code, indent):
 def execute(*code):
     for c in code:
         # Write to log file
-        os.system("echo {} >> {}".format(
-            "'>>> Executing: {}'".format(c),
+        os.system("echo -e {} >> {}".format(
+            "'\n>>> Executing: {}\n'".format(c),
             logfile_path
         ))
         # Execute code
