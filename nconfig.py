@@ -53,7 +53,6 @@ packages = {
     "DEB": deb
 }
 
-exit_codes = list()
 logfile_path = "nconfig.log"
 env_user = os.environ["USER"]
 env_home = os.environ["HOME"]
